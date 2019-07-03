@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+.app-logo {
+  width: 16px;
+}
+.app-logo:hover {
+  transform: scale(2);
+}
+
+@media (min-width: 988px) {
+  .item-body {
+    max-width: 684px;
+  }
+}
