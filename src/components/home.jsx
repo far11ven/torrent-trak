@@ -10,6 +10,10 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    this.handleGetTracker();
+  }
+
+  handleGetTracker() {
     axios.get(Config.API.GET_TRACKER).then(response => {
       let newTrackerItems = this.state.trackerList.splice();
       newTrackerItems = newTrackerItems.concat(response.data.result);
@@ -32,9 +36,8 @@ class Home extends Component {
       .then(response => {
         console.log("POST respose", response);
         if (response.status === 200) {
-          this.showToastMessage(
-            "Topic saved successfully!! Refresh to see updated list."
-          );
+          this.showToastMessage("Topic saved successfully!!");
+          this.handleGetTracker(); //efetches updated list
         }
       });
   };
@@ -45,7 +48,7 @@ class Home extends Component {
 
     setTimeout(function() {
       document.getElementById("toast").style.display = "none";
-    }, 10000);
+    }, 6000);
   }
 
   handleInputChange = event => {
@@ -57,18 +60,16 @@ class Home extends Component {
       <React.Fragment>
         <div className="container">
           <form onSubmit={this.handleSubmit}>
-            <label className="m-2">
-              <input
-                onChange={this.handleInputChange}
-                type="text"
-                name="title"
-                className="m-2"
-                placeholder="Add a tracker.."
-              />
-            </label>
+            <input
+              className="m-2"
+              onChange={this.handleInputChange}
+              type="text"
+              name="title"
+              placeholder="Add a tracker.."
+            />
             <button
-              disabled={!this.state.newTrackerName}
               className="btn btn-primary btn-sm m-2"
+              disabled={!this.state.newTrackerName}
               type="submit"
             >
               {" "}
