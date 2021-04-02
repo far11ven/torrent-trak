@@ -21,6 +21,23 @@ class Home extends Component {
     });
   }
 
+  handleDeleteTracker = async (id) => {
+
+    const postBody = JSON.stringify({
+      tracker_id: id
+    });
+    var headers = {
+      "Content-Type": "application/json"
+    };
+
+    return await axios({
+      method: 'DELETE',
+      url: Config.API.DELETE_TRACKER,
+      data: postBody,
+      headers:headers
+    })
+  }
+
   handleSubmit = event => {
     event.preventDefault();
 
@@ -91,7 +108,10 @@ class Home extends Component {
           </div>
 
           {this.state.trackerList.map(item => {
-            return <TrackerItem key={item._id} item={item} />;
+            return <div className = "p-2 mx-auto" key={item._id}>
+               <button className="btn btn-primary" onClick={() => this.handleDeleteTracker(item._id)}> X </button>
+              <TrackerItem item={item}/>
+              </div>
           })}
         </div>
       </React.Fragment>
