@@ -21,21 +21,23 @@ class Home extends Component {
     });
   }
 
-  handleDeleteTracker = async (id) => {
+  handleDeleteTracker = (id) => {
+    const queryParams = new URLSearchParams();
+    queryParams.append('tracker_id', id);
 
-    const postBody = JSON.stringify({
-      tracker_id: id
-    });
     var headers = {
       "Content-Type": "application/json"
     };
 
-    return await axios({
-      method: 'DELETE',
-      url: Config.API.DELETE_TRACKER,
-      data: postBody,
-      headers:headers
-    })
+    axios
+    .delete(Config.API.DELETE_TRACKER, { params: queryParams, headers: headers })
+    .then(response => {
+      console.log("DELETE respose", response);
+      if (response.status === 200) {
+        this.handleGetTracker(); //refetches updated list
+        this.showToastMessage("Topic Deleted successfully!!");
+      }
+    });
   }
 
   handleSubmit = event => {
@@ -53,8 +55,8 @@ class Home extends Component {
       .then(response => {
         console.log("POST respose", response);
         if (response.status === 200) {
+          this.handleGetTracker(); //refetches updated list
           this.showToastMessage("Topic saved successfully!!");
-          this.handleGetTracker(); //efetches updated list
         }
       });
   };
